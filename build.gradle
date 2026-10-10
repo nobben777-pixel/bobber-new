@@ -1,0 +1,64 @@
+plugins {
+	id 'fabric-loom' version '1.6.13'
+	id 'maven-publish'
+	id 'java'
+}
+
+base {
+	archivesBaseName = "separatebobbers"
+	version = "2.0.0"
+	group = "com.example"
+}
+
+repositories {
+	mavenCentral()
+	maven { url = "https://api.modrinth.com/maven" }
+	maven { url = "https://maven.fabricmc.net/" }
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:1.21.11"
+	mappings loom.officialMojangMappings()
+	modImplementation "net.fabricmc:fabric-loader:0.16.9"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:0.107.0+1.21.11"
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 21
+}
+
+jar {
+	from("LICENSE") {
+		rename { "${it}_${base.archivesBaseName}" }
+	}
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			artifact remapJar {
+				builtBy remapJar
+			}
+			artifact sourcesJar {
+				builtBy remapSourcesJar
+			}
+		}
+	}
+}
+
+processResources {
+	inputs.property "version", project.version
+	inputs.property "group", project.group
+
+	filteringCharset "UTF-8"
+
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version,
+				"group": project.group
+	}
+}

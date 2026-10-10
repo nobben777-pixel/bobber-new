@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "separatebobbers",
+  "version": "2.0.0",
+  "name": "Separate Bobbers",
+  "description": "У каждой удочки свой отдельный поплавок. Поплавки сохраняются после перезагрузки!",
+  "authors": ["nobben777-pixel"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.example.separatebobbers.SeparateBobbers"]
+  },
+  "mixins": ["separatebobbers.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
